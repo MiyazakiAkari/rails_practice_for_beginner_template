@@ -2,7 +2,22 @@ class QuestionsController < ApplicationController
     def index
         @questions = Question.all
         @q = Question.ransack(params[:q])
+        @questions = @q.result(distinct: true).page(params[:page]).per(5)
+        @search_path = questions_path
+    end
+
+    def solved
+        @q = Question.where(solved: true).ransack(params[:q])
         @questions = @q.result(distinct: true)
+        @search_path = solved_questions_path
+        render :index
+    end
+
+    def unsolved
+        @q = Question.where(solved: false).ransack(params[:q])
+        @questions = @q.result(distinct: true)
+        @search_path = unsolved_questions_path
+        render :index
     end
 
     def show
@@ -43,6 +58,12 @@ class QuestionsController < ApplicationController
         @question = current_user.questions.find(params[:id])
         @question.destroy!
         redirect_to questions_path, success: '質問を削除しました。'
+    end
+
+    def solve
+        @question = current_user.questions.find(params[:id])
+        @question.update!(solved: true)
+        redirect_to question_path(@question), success: '解決済みにしました。'
     end
 
     private

@@ -5,6 +5,7 @@ class Question < ApplicationRecord
   validates :body, presence: true
 
   def self.ransackable_attributes(auth_object = nil)
-    ["body", "title"]
+    ["title"]
   end
+  
 end
