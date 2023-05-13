@@ -8,14 +8,14 @@ class QuestionsController < ApplicationController
 
     def solved
         @q = Question.where(solved: true).ransack(params[:q])
-        @questions = @q.result(distinct: true)
+        @questions = @q.result(distinct: true).page(params[:page]).per(5)
         @search_path = solved_questions_path
         render :index
     end
 
     def unsolved
         @q = Question.where(solved: false).ransack(params[:q])
-        @questions = @q.result(distinct: true)
+        @questions = @q.result(distinct: true).page(params[:page]).per(5)
         @search_path = unsolved_questions_path
         render :index
     end
