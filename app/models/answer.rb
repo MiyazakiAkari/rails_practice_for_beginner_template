@@ -4,7 +4,4 @@ class Answer < ApplicationRecord
 
   validates :body, presence: true
 
-  def mark_as_edited
-    update(edited_at: DateTime.now)
-  end
 end

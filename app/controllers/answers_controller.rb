@@ -32,6 +32,6 @@ class AnswersController < ApplicationController
 
     private
     def answer_params
-        params.permit(:body)
+        params.require(:answer).permit(:body)
     end
 end
