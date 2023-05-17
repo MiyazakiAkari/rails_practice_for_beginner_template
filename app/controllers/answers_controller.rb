@@ -16,6 +16,20 @@ class AnswersController < ApplicationController
         redirect_to question_path(params[:question_id]), notice: '回答を削除しました。'
     end
 
+    def edit
+        @answer = current_user.answers.find(params[:id])
+    end
+
+    def update
+        @answer = current_user.answers.find(params[:id])
+        @answer.edited = true
+        if @answer.update(answer_params)
+            redirect_to question_path(params[:question_id]), notice: '回答を更新しました。'
+        else
+            render :edit
+        end
+    end
+
     private
     def answer_params
         params.require(:answer).permit(:body)
